@@ -11,7 +11,7 @@ export default function AdminFooter() {
             {new Date().getFullYear()}, Made with <i className="la la-heart heart text-danger"></i>{" "}
             by{" "}
             <a href="#" target={"_blank"}>
-              Miss Atho ❤️❤️❤️
+              Alvin Wachira ❤️❤️❤️
             </a>
           </div>
         </div>

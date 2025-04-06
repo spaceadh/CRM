@@ -47,21 +47,21 @@ export default function AdminSideBar(props) {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/inventory">
+              <Link to="/clients">
                 <i className="la la-ambulance"></i>
-                <p>Inventory Management</p>
+                <p>Customer Management</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/categories">
+              <Link to="/staff">
                 <i className="la la-align-justify"></i>
-                <p>BassMart Categories Categories</p>
+                <p>Staff Members</p>
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/orders">
+              <Link to="/sms">
                 <i className="la la-align-justify"></i>
-                <p>BassMart Orders</p>
+                <p>SMS`s</p>
               </Link>
             </li>
             <li className="nav-item">

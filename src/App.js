@@ -7,7 +7,7 @@ import Dashboard from "./components/Dashboard";
 import AdminLogin from "./components/AdminLogin";
 import AdminRegister from "./components/AdminRegister";
 import AdminProfile from "./components/AdminProfile";
-import ProductCategory from "./components/ProductCategory";
+import StaffMember from "./components/StaffMember";
 import OrdersCategory from './components/OrdersCategory';
 import AddCategory from "./components/AddCategory";
 import UpdateCategory from "./components/UpdateCategory";
@@ -28,38 +28,38 @@ function App() {
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/profile" element={<AdminProfile />} />
-        <Route path="/categories" element={<ProductCategory />} />
-        <Route path="/orders" element={<OrdersCategory />} />
-        <Route path="/addcategory" element={<AddCategory />} />
-        <Route path="/updatecategory" element={<UpdateCategory />} />
+        <Route path="/staff" element={<StaffMember />} />
+        <Route path="/sms" element={<OrdersCategory />} />
+        <Route path="/addstaffmember" element={<AddCategory />} />
+        <Route path="/updatestaffmember" element={<UpdateCategory />} />
         {/* <Route path="/types" element={<MedicineTypes />} /> */}
         {/* <Route path="/addtype" element={<AddType />} />
         <Route path="/updatetype" element={<UpdateType />} /> */}
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/addInventory" element={<AddProduct />} />
-        <Route path="/updateInventory" element={<UpdateProduct />} />
+        <Route path="/clients" element={<Inventory />} />
+        <Route path="/addClient" element={<AddProduct />} />
+        <Route path="/updateclientDetails" element={<UpdateProduct />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-// function AuthListener() {
-//   const navigate = useNavigate();
+function AuthListener() {
+  const navigate = useNavigate();
 
-//   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged((user) => {
-//       if (user) {
-//         navigate("/dashboard");
-//       } else {
-//         navigate("/login");
-//       }
-//     });
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/dashboard");
+      } else {
+        navigate("/login");
+      }
+    });
 
-//     // Cleanup subscription on unmount
-//     return () => unsubscribe();
-//   }, [navigate]);
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [navigate]);
 
-//   return null;
-// }
+  return null;
+}
 
 export default App;

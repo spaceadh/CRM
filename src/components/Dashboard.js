@@ -13,7 +13,7 @@ export default function Dashboard(props) {
   useEffect(() => {
     const countCustomersAdded = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "customer_database"));
+        const querySnapshot = await getDocs(collection(db, "test_customer_database"));
         setcustomerCount(querySnapshot.size);
       } catch (error) {
         console.error("Error counting documents: ", error);
@@ -25,7 +25,7 @@ export default function Dashboard(props) {
   useEffect(() => {
     const getSMSSent = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "customer_database"));
+        const querySnapshot = await getDocs(collection(db, "test_customer_database"));
         let total = 0;
         // querySnapshot.forEach(doc => {
         //   const data = doc.data();

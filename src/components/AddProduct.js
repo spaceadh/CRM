@@ -9,7 +9,7 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 export default function AddProduct() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const categoriesCollectionReference = collection(db, "inventory_categories");
+  const categoriesCollectionReference = collection(db, "staff_members");
 
   const getCategories = async () => {
     const data = await getDocs(categoriesCollectionReference);
@@ -28,54 +28,51 @@ export default function AddProduct() {
     getCategories();
     getTypes();
   }, []);
-  const productsCollectionRef = collection(db, "customer_database");
+  const productsCollectionRef = collection(db, "test_customer_database");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [product, setInventory] = useState({
-    name: "",
+    clientname: "",
     rating: "",
     category: "",
-    type: "",
-    description: "",
-    price: "",
-    stock: "",
-    imgUrl: "",
+    businessname: "",
+    location: "",
+    phoneNumber: "",
     rating: "",
-    originalPrice: ""
   });
 
-  const handleAddMedicine = async () => {
+  const handleClientsDetails = async () => {
     if (
-      product.name &&
+      product.clientname &&
       product.rating &&
-      product.description &&
       product.category &&
-      product.price &&
-      product.stock &&
-      product.imgUrl &&
-      product.originalPrice
+      product.businessname &&
+      product.location &&
+      product.phoneNumber
     ) {
       setErrorMsg("");
       const rating = parseFloat(product.rating) <= 5 ? product.rating.toString() : "5";
 
       await addDoc(productsCollectionRef, {
         ...product,
-        price: parseFloat(product.price),
-        stock: parseInt(product.stock, 10),
+        businessname: product.businessname,
+        location: product.location,
         rating: rating,
-        description: product.description,
-        discount:
-        product.originalPrice && parseFloat(product.originalPrice) !== parseFloat(product.price)
-          ? parseFloat(product.originalPrice) - parseFloat(product.price)
-          : null,
-        // discount: product.originalPrice && product.originalPrice !== product.price ? product.originalPrice - product.price : null
+        phoneNumber: product.phoneNumber,
+        assignedto: product.category,
+        // discount:
+        // product.originalPrice && parseFloat(product.originalPrice) !== parseFloat(product.businessname)
+        //   ? parseFloat(product.originalPrice) - parseFloat(product.businessname)
+        //   : null,
+        // discount: product.originalPrice && product.originalPrice !== product.businessname ? product.originalPrice - product.businessname : null
       });
       setSuccessMsg("Inventory added successfully!");
       setTimeout(() => {
         setSuccessMsg("");
-        navigate("/inventory");
+        navigate("/clients");
       }, 1000);
     } else {
+      console.log(product);
       setErrorMsg("Please fill out all the required fields!");
     }
   };
@@ -87,70 +84,70 @@ export default function AddProduct() {
       <div className="main-panel">
         <div className="content">
           <div className="container-fluid">
-            <h4 className="page-title">Create Inventory Product</h4>
+            <h4 className="page-title">Add Client Details</h4>
             <div className="row">
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header">
                     <div className="card-title">
                       New Inventory Product Details
-                      <Link to="/inventory" className="btn btn-danger btn-sm float-right">
+                      <Link to="/clients" className="btn btn-danger btn-sm float-right">
                         Go BACK
                       </Link>
                     </div>
                   </div>
                   <div className="card-body px-4">
                     <div className="form-group">
-                      <label htmlFor="name">Inventory Product Name</label>
+                      <label htmlFor="clientname">Enter Client Name</label>
                       <input
                         type="text"
                         className="form-control"
-                        value={product.name}
-                        id="name"
+                        value={product.clientname}
+                        id="clientname"
                         onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, name: event.target.value }))
+                          setInventory((prev) => ({ ...prev, clientname: event.target.value }))
                         }
-                        placeholder="Enter Inventory Product Name"
+                        placeholder="Enter Client Name"
                       />
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="rating">Inventory Product Rating</label>
+                      <label htmlFor="rating">Enter Customer Rating</label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         value={product.rating}
                         id="rating"
                         onChange={(event) =>
                           setInventory((prev) => ({ ...prev, rating: event.target.value }))
                         }
-                        placeholder="Enter Inventory Product Rating"
+                        placeholder="Enter Customer Rating"
                       />
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="imgUrl">Inventory Product Description</label>
+                    {/* <div className="form-group">
+                      <label htmlFor="phoneNumber">Inventory Product Description</label>
                       <input
                         type="text"
                         className="form-control"
                         value={product.description}
-                        id="imgUrl"
+                        id="phoneNumber"
                         onChange={(event) =>
                           setInventory((prev) => ({ ...prev, description: event.target.value }))
                         }
                         placeholder="Enter Inventory Product Description"
                       />
-                    </div>
+                    </div> */}
                     <div className="form-group">
-                      <label htmlFor="category">Inventory Product Category</label>
+                      <label htmlFor="category">Client Assigned to</label>
                       <select
                         className="form-control"
-                        value={product.category}
+                        value={product.assignedto}
                         onChange={(event) =>
                           setInventory((prev) => ({ ...prev, category: event.target.value }))
                         }
                         id="category"
                       >
-                        <option value="">Select a Category...</option>
+                        <option value="">Client Assigned To ...</option>
                         {categories.map((category) => (
                           <option key={category.id} value={category.name}>
                             {category.name}
@@ -160,55 +157,41 @@ export default function AddProduct() {
                     </div>
                     
                     <div className="form-group">
-                      <label htmlFor="price">Inventory Product Price (in Kshs)</label>
+                      <label htmlFor="businessname">Client`s Business name</label>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control"
-                        value={product.price}
-                        id="price"
+                        value={product.businessname}
+                        id="businessname"
                         onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, price: event.target.value }))
+                          setInventory((prev) => ({ ...prev, businessname: event.target.value }))
                         }
-                        placeholder="Enter Inventory Product Price"
+                        placeholder="Enter Business name"
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="originalPrice">Inventory Product Original Price</label>
+                      <label htmlFor="location">Customer Location</label>
                       <input
-                        type="number"
                         className="form-control"
-                        value={product.originalPrice}
-                        id="originalPrice"
+                        value={product.location}
+                        id="location"
                         onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, originalPrice: event.target.value }))
+                          setInventory((prev) => ({ ...prev, location: event.target.value }))
                         }
-                        placeholder="Enter Inventory Product Original Price (Non Discounted)"
+                        placeholder="Enter Customer Location"
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="stock">Inventory Product Stock</label>
+                      <label htmlFor="phoneNumber">Customer Phone Number</label>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control"
-                        value={product.stock}
-                        id="stock"
+                        value={product.phoneNumber}
+                        id="phoneNumber"
                         onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, stock: event.target.value }))
+                          setInventory((prev) => ({ ...prev, phoneNumber: event.target.value }))
                         }
-                        placeholder="Enter Inventory Product Stock"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="imgUrl">Inventory Product Image Url</label>
-                      <input
-                        type="url"
-                        className="form-control"
-                        value={product.imgUrl}
-                        id="imgUrl"
-                        onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, imgUrl: event.target.value }))
-                        }
-                        placeholder="Enter Inventory Product Image Url"
+                        placeholder="Enter Customer Phone Number"
                       />
                     </div>
                   </div>
@@ -216,8 +199,8 @@ export default function AddProduct() {
                   <div className="form-group px-4 mb-3">
                     <div className="text-center text-danger">{errorMsg}</div>
                     <div className="text-center text-success">{successMsg}</div>
-                    <button className="btn btn-primary mx-3" onClick={handleAddMedicine}>
-                      Add Inventory Product
+                    <button className="btn btn-primary mx-3" onClick={handleClientsDetails}>
+                      Add Client Details
                     </button>
                   </div>
                 </div>

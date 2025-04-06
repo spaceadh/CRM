@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
-export default function Inventory() {
+export default function CustomerInventory() {
   var counter = 1;
-  const [bassmartInventory, setbassmartInventory] = useState([]);
-  const productsCollectionRef = collection(db, "customer_database");
+  const [customerInventory, setcustomerInventory] = useState([]);
+  const productsCollectionRef = collection(db, "test_customer_database");
   const getTypes = async () => {
     const data = await getDocs(productsCollectionRef);
-    setbassmartInventory(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setcustomerInventory(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
   const handleDeleteButton = async (id) => {
     const proDoc = doc(productsCollectionRef, id);
@@ -29,15 +29,15 @@ export default function Inventory() {
       <div className="main-panel">
         <div className="content">
           <div className="container-fluid">
-            <h4 className="page-title">Bassmart Inventory Management</h4>
+            <h4 className="page-title">Somafix CRM</h4>
             <div className="row">
               <div className="col-md-12">
                 <div className="card card-tasks">
                   <div className="card-header ">
                     <h4 className="card-title">
-                      Inventory List{" "}
-                      <Link to="/addInventory" className="btn btn-primary btn-sm float-right">
-                        Add new Product
+                    Customer Inventory List{" "}
+                      <Link to="/addClient" className="btn btn-primary btn-sm float-right">
+                        Add new Customer
                       </Link>{" "}
                     </h4>
                   </div>
@@ -48,42 +48,43 @@ export default function Inventory() {
                           <tr>
                             <th>#</th>
                             <th>
-                              Product Name<sup>Rating</sup>
+                              Client Name<sup>Rating</sup>
                             </th>
-                            <th>Product Category</th>
-                            <th>Product Price</th>
-                            <th>Product Available stock</th>
-                            <th>Product Image</th>
+                            <th>Client Added By</th>
+                            <th>Client Business Name</th>
+                            <th>Client Location</th>
+                            <th>Client Phone Number</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {bassmartInventory.map((product) => {
+                          {customerInventory.map((product) => {
                             return (
                               <tr>
                                 <td>{counter++}</td>
                                 <td>
-                                  {product.name} <sup>{product.power}</sup>
+                                  {product.clientname} <sup>{product.power}</sup>
                                 </td>
-                                <td>{product.category}</td>
-                                <td>Ksh{product.price}</td>
-                                <td>{product.stock}</td>
+                                <td>{product.assignedto}</td>
+                                <td>{product.businessname}</td>
+                                <td>{product.location}</td>
                                 <td>
-                                  <img
-                                    src={product.imgUrl}
-                                    alt={product.name}
+                                  {/* <img
+                                    src={product.phoneNumber}
+                                    alt={product.clientname}
                                     style={{ width: "50px", height: "50px" }}
-                                  />
+                                  /> */}
+                                  <td>{product.phoneNumber}</td>
                                 </td>
                                 <td className="td-actions">
                                   <div className="form-button-action">
-                                    <Link to="/updateInventory">
+                                    <Link to="/updateclientDetails">
                                       <button
                                         type="button"
                                         className="btn btn-link btn-success"
                                         onClick={() => {
                                           sessionStorage.setItem(
-                                            "inventory_obj",
+                                            "customer_inventory_obj",
                                             JSON.stringify(product)
                                           );
                                         }}>

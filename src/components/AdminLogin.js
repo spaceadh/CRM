@@ -5,13 +5,13 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/dashboard");
+      }
+    });
+  }, []);
   const [values, setValues] = useState({
     email: "",
     password: "",

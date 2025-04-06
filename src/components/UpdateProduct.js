@@ -9,7 +9,7 @@ import { collection, doc, updateDoc, getDocs,deleteDoc } from "firebase/firestor
 export default function UpdateProduct() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const categoriesCollectionReference = collection(db, "inventory_categories");
+  const categoriesCollectionReference = collection(db, "staff_members");
   const getCategories = async () => {
     const data = await getDocs(categoriesCollectionReference);
     setCategories(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -17,27 +17,27 @@ export default function UpdateProduct() {
   useEffect(() => {
     getCategories();
   }, []);
-  const productCollectionRef = collection(db, "customer_database");
-  const [product, setProduct] = useState(JSON.parse(sessionStorage.getItem("inventory_obj")));
+  const productCollectionRef = collection(db, "test_customer_database");
+  const [product, setProduct] = useState(JSON.parse(sessionStorage.getItem("customer_inventory_obj")));
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
-  const handleUpdateMedicine = async () => {
+  const handleUpdateClientDetails = async () => {
     if (
-      product.name &&
+      product.clientname &&
       product.id &&
-      product.imgUrl &&
-      product.category &&
-      product.price &&
-      product.stock
+      product.phoneNumber &&
+      product.assignedto &&
+      product.businessname &&
+      product.location
     ) {
       const medDoc = doc(productCollectionRef, product.id);
       await updateDoc(medDoc, product);
       setErrorMsg("");
-      setSuccessMsg("Product updated Successfully!");
+      setSuccessMsg("Client updated Successfully!");
       setTimeout(() => {
         setSuccessMsg("");
-        navigate("/inventory");
+        navigate("/clients");
       }, 1000);
     } else {
       setErrorMsg("Please fill out all the required fields!");
@@ -50,44 +50,44 @@ export default function UpdateProduct() {
       <div className="main-panel">
         <div className="content">
           <div className="container-fluid">
-            <h4 className="page-title">Change Product</h4>
+            <h4 className="page-title">Change Client Details</h4>
             <div className="row">
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-header">
                     <div className="card-title">
-                      Edit Product Details
-                      <Link to="/inventory" className="btn btn-danger btn-sm float-right">
+                      Edit Client Details
+                      <Link to="/clients" className="btn btn-danger btn-sm float-right">
                         Go BACK
                       </Link>{" "}
                     </div>
                   </div>
                   <div className="card-body px-4">
                     <div className="form-group">
-                      <label htmlFor="name">Product Name</label>
+                      <label htmlFor="clientname">Enter Client Name</label>
                       <input
                         type="text"
                         className="form-control"
-                        value={product.name}
-                        id="name"
+                        value={product.clientname}
+                        id="clientname"
                         onChange={(event) =>
-                          setProduct((prev) => ({ ...prev, name: event.target.value }))
+                          setProduct((prev) => ({ ...prev, clientname: event.target.value }))
                         }
-                        placeholder="Enter Product Name"
+                        placeholder="Enter Client Name"
                       />
                     </div>
 
                     <div class="form-group">
-                      <label for="exampleFormControlSelect1">Product Category</label>
+                      <label for="exampleFormControlSelect1">Client Assigned to</label>
                       <select
                         class="form-control"
                         onChange={(event) =>
                           setProduct((prev) => ({ ...prev, category: event.target.value }))
                         }
                         id="exampleFormControlSelect1">
-                        <option value="">Select a Category...</option>
+                        <option value="">Client Assigned to...</option>
                         {categories.map((category) => {
-                          if (category.name === product.category) {
+                          if (category.name === product.assignedto) {
                             return (
                               <option value={category.name} selected="true">
                                 {category.name}
@@ -100,42 +100,42 @@ export default function UpdateProduct() {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="price">Product Price (in Kshs)</label>
+                      <label htmlFor="businessname">Business Name</label>
                       <input
                         type="text"
                         className="form-control"
-                        value={product.price}
-                        id="price"
+                        value={product.businessname}
+                        id="businessname"
                         onChange={(event) =>
-                          setProduct((prev) => ({ ...prev, price: event.target.value }))
+                          setProduct((prev) => ({ ...prev, businessname: event.target.value }))
                         }
-                        placeholder="Enter Product Price"
+                        placeholder="Enter Business Name"
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="price">Product Image Url (in Kshs)</label>
+                      <label htmlFor="phoneNumber">Client Phone Number</label>
                       <input
                         type="text"
                         className="form-control"
-                        value={product.imgUrl}
-                        id="imgUrl"
+                        value={product.phoneNumber}
+                        id="phoneNumber"
                         onChange={(event) =>
-                          setProduct((prev) => ({ ...prev, imgUrl: event.target.value }))
+                          setProduct((prev) => ({ ...prev, phoneNumber: event.target.value }))
                         }
-                        placeholder="Enter Product Image URL"
+                        placeholder="Enter Client Phone Number"
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="stock">Product Available Stock</label>
+                      <label htmlFor="location">Client`s Location</label>
                       <input
                         type="text"
                         className="form-control"
-                        value={product.stock}
-                        id="stock"
+                        value={product.location}
+                        id="location"
                         onChange={(event) =>
-                          setProduct((prev) => ({ ...prev, stock: event.target.value }))
+                          setProduct((prev) => ({ ...prev, location: event.target.value }))
                         }
-                        placeholder="Enter Product Stock"
+                        placeholder="Enter Location"
                       />
                     </div>
                   </div>
@@ -143,8 +143,8 @@ export default function UpdateProduct() {
                   <div className="form-group px-4 mb-3">
                     <div className="text-center text-danger">{errorMsg}</div>
                     <div className="text-center text-success">{successMsg}</div>
-                    <button className="btn btn-success mx-3" onClick={handleUpdateMedicine}>
-                      Update Product
+                    <button className="btn btn-success mx-3" onClick={handleUpdateClientDetails}>
+                      Update Client Details
                     </button>
                   </div>
                 </div>

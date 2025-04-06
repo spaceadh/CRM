@@ -6,10 +6,10 @@ import AdminFooter from "./layouts/AdminFooter";
 import { db } from "../firebase";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
-export default function ProductCategory(props) {
+export default function StaffMember(props) {
   var counter = 1;
   const [categories, setCategories] = useState([]);
-  const categoriesCollectionReference = collection(db, "inventory_categories");
+  const categoriesCollectionReference = collection(db, "staff_members");
   const getCategories = async () => {
     const data = await getDocs(categoriesCollectionReference);
     setCategories(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -29,15 +29,15 @@ export default function ProductCategory(props) {
       <div className="main-panel">
         <div className="content">
           <div className="container-fluid">
-            <h4 className="page-title">Product Categories</h4>
+            <h4 className="page-title">Staff Names</h4>
             <div className="row">
               <div className="col-md-12">
                 <div className="card card-tasks">
                   <div className="card-header ">
                     <h4 className="card-title">
-                      Categories List{" "}
-                      <Link to="/addcategory" className="btn btn-primary btn-sm float-right">
-                        Add new Category
+                      Staff List{" "}
+                      <Link to="/addstaffmember" className="btn btn-primary btn-sm float-right">
+                        Add new Staff Member
                       </Link>{" "}
                     </h4>
                   </div>
@@ -47,7 +47,7 @@ export default function ProductCategory(props) {
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Category Name</th>
+                            <th>Staff Member Name</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -59,13 +59,13 @@ export default function ProductCategory(props) {
                                 <td>{category.name}</td>
                                 <td className="td-actions">
                                   <div className="form-button-action">
-                                    <Link to="/updatecategory">
+                                    <Link to="/updatestaffmember">
                                       <button
                                         type="button"
                                         className="btn btn-link btn-success"
                                         onClick={() => {
                                           sessionStorage.setItem(
-                                            "category_obj",
+                                            "staff_members_obj",
                                             JSON.stringify(category)
                                           );
                                         }}>
