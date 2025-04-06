@@ -9,7 +9,7 @@ export default function OrdersCategory(props) {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [ordersPerPage] = useState(10);
-  const ordersCollectionReference = collection(db, "bassmart_orders");
+  const ordersCollectionReference = collection(db, "crm_sms");
 
   const getOrders = async () => {
     const data = await getDocs(ordersCollectionReference);
@@ -19,8 +19,8 @@ export default function OrdersCategory(props) {
   };
 
   const handleStatusChange = async (userId,id, orderId, newStatus) => {
-    const userOrderDoc = doc(db, "users", userId, "bassmart_orders", orderId);
-    const mainOrderDoc = doc(db, "bassmart_orders", orderId);
+    const userOrderDoc = doc(db, "users", userId, "crm_sms", orderId);
+    const mainOrderDoc = doc(db, "crm_sms", orderId);
     
     await Promise.all([
       updateDoc(userOrderDoc, { delivery: newStatus }),
@@ -47,12 +47,12 @@ export default function OrdersCategory(props) {
       <div className="main-panel">
         <div className="content">
           <div className="container-fluid">
-            <h4 className="page-title">Bassmart Orders</h4>
+            <h4 className="page-title">Somafix SMS</h4>
             <div className="row">
               <div className="col-md-12">
                 <div className="card card-tasks">
                   <div className="card-header">
-                    <h4 className="card-title">Orders List</h4>
+                    <h4 className="card-title">Somafix SMS List</h4>
                   </div>
                   <div className="card-body">
                     <div className="table-full-width px-5 py-4 table-striped">
@@ -60,12 +60,12 @@ export default function OrdersCategory(props) {
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
+                            <th>Client Name</th>
+                            <th>Client assigned to</th>
+                            <th>Business name</th>
+                            <th>Location</th>
                             <th>Date</th>
-                            <th>Delivery Status</th>
+                            <th>SMS Delivery Status</th>
                             <th>Action</th>
                           </tr>
                         </thead>
