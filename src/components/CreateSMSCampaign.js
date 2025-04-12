@@ -15,6 +15,31 @@ export default function CreateSMSCampaign() {
   const [campaignName, setCampaignName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [staffMembers, setStaffMembers] = useState([]);
+  const [staffPhoneMap, setStaffPhoneMap] = useState({});
+  
+  const getStaffMembers = async () => {
+  const staffMembersCollectionReference = collection(db, "staff_members");
+    const data = await getDocs(staffMembersCollectionReference);
+    setStaffMembers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+  useEffect(() => {
+    getStaffMembers();
+  }, []);
+  
+  useEffect(() => {
+    if (staffMembers.length > 0) {
+      const map = {};
+      staffMembers.forEach(member => {
+        map[member.name.toLowerCase()] = member.phoneNo; // Assuming phoneNo field exists
+      });
+      setStaffPhoneMap(map);
+    }
+  }, [staffMembers]);
+
+  console.log(staffMembers);
+  console.log(staffPhoneMap);
+
   const [filters, setFilters] = useState({
     Location: "",
     Rating: "",
@@ -117,7 +142,7 @@ export default function CreateSMSCampaign() {
     
     return [...new Set(values)];
   };
-
+  
   // Preview SMS with actual values
   const previewSMS = () => {
     if (filteredCustomers.length === 0) return "No customers match current filters";
@@ -134,10 +159,12 @@ export default function CreateSMSCampaign() {
       if (variable.id === 'BusinessName') value = sampleCustomer.businessname || '';
       if (variable.id === 'Location') value = sampleCustomer.location || '';
       if (variable.id === 'AssignedTo') value = sampleCustomer.assignedto || '';
-      if (variable.id === 'PhoneNo') value = sampleCustomer.phoneNumber || '';
+      if (variable.id === 'PhoneNo') {
+        value = staffPhoneMap[sampleCustomer.assignedto?.toLowerCase()] || '';
+      }
       if (variable.id === 'Rating') value = sampleCustomer.rating || '';
       if (variable.id === 'Religion') value = sampleCustomer.religion || '';
-      
+
       message = message.replace(new RegExp(placeholder, 'g'), value);
     });
     
@@ -159,7 +186,9 @@ export default function CreateSMSCampaign() {
           if (variable.id === 'BusinessName') value = customer.businessname || '';
           if (variable.id === 'Location') value = customer.location || '';
           if (variable.id === 'AssignedTo') value = customer.assignedto || '';
-          if (variable.id === 'PhoneNo') value = customer.phoneNumber || '';
+          if (variable.id === 'PhoneNo') {
+            value = staffPhoneMap[customer.assignedto?.toLowerCase()] || '';
+          }
           if (variable.id === 'Rating') value = customer.rating || '';
           if (variable.id === 'Religion') value = customer.religion || '';
   
@@ -208,7 +237,7 @@ export default function CreateSMSCampaign() {
       // console.log("API Response:", response);
       
       setSuccessMsg(`Campaign "${campaignName}" prepared for ${filteredCustomers.length} recipients!`);
-      setTimeout(() => navigate("/clients"), 3000);
+      setTimeout(() => navigate("/dashboard"), 3000);
     } catch (error) {
       setErrorMsg("Failed to prepare campaign: " + error.message);
     }

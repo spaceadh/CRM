@@ -10,16 +10,6 @@ export default function ClientExcelUploader() {
   const [previewData, setPreviewData] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [selectedSheets, setSelectedSheets] = useState([]);
-  const [staffMembers, setStaffMembers] = useState([]);
-
-  const getStaffMembers = async () => {
-  const staffMembersCollectionReference = collection(db, "staff_members");
-    const data = await getDocs(staffMembersCollectionReference);
-    setStaffMembers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-  };
-  useEffect(() => {
-    getStaffMembers();
-  }, []);
 
   const handleFileUpload = (e) => {
       const file = e.target.files[0];
