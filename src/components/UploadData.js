@@ -118,6 +118,7 @@ export default function ClientExcelUploader() {
                 location: toCamelCase((entry.location || "").trim()),
                 phoneNumber: (entry.contact || "").trim(),
                 assignedto: toCamelCase((entry.salesPersonel || "").trim()),
+                rating:5
               };
             });
   

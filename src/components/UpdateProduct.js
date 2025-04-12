@@ -64,7 +64,7 @@ export default function UpdateProduct() {
                   </div>
                   <div className="card-body px-4">
                     <div className="form-group">
-                      <label htmlFor="clientname">Enter Client Name</label>
+                      <label htmlFor="clientname">Enter Client Name i.e James</label>
                       <input
                         type="text"
                         className="form-control"
@@ -73,7 +73,7 @@ export default function UpdateProduct() {
                         onChange={(event) =>
                           setProduct((prev) => ({ ...prev, clientname: event.target.value }))
                         }
-                        placeholder="Enter Client Name"
+                        placeholder="Enter Client Name i.e James"
                       />
                     </div>
 
@@ -100,7 +100,7 @@ export default function UpdateProduct() {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="businessname">Business Name</label>
+                      <label htmlFor="businessname">Enter Business Name i.e Jumbo Hardware</label>
                       <input
                         type="text"
                         className="form-control"
@@ -109,7 +109,7 @@ export default function UpdateProduct() {
                         onChange={(event) =>
                           setProduct((prev) => ({ ...prev, businessname: event.target.value }))
                         }
-                        placeholder="Enter Business Name"
+                        placeholder="Enter Business Name i.e Jumbo Hardware"
                       />
                     </div>
                     <div className="form-group">
@@ -136,6 +136,20 @@ export default function UpdateProduct() {
                           setProduct((prev) => ({ ...prev, location: event.target.value }))
                         }
                         placeholder="Enter Location"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="dayofWeek">Day of Week</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={product.dayofWeek}
+                        id="dayofWeek"
+                        onChange={(event) =>
+                          setProduct((prev) => ({ ...prev, dayofWeek: event.target.value }))
+                        }
+                        placeholder="Enter dayofWeek"
                       />
                     </div>
                   </div>
