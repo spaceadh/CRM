@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
-export default function CustomerInventory() {
-  const [customerInventory, setCustomerInventory] = useState([]);
+export default function SMSListing() {
+  const [smsListing, setSmsListing] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,29 +15,23 @@ export default function CustomerInventory() {
   const [filters, setFilters] = useState({
     assignedto: "",
     location: "",
-    dayofWeek: ""
+    dayofWeek: "",
+    smsDeliveryStatus: "",
   });
 
-  const productsCollectionRef = collection(db, "test_customer_database");
+  const productsCollectionRef = collection(db, "test_crm_sms");
 
   // Get data from Firestore
   const getTypes = async () => {
     const data = await getDocs(productsCollectionRef);
     const customers = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    setCustomerInventory(customers);
+    setSmsListing(customers);
     setFilteredData(customers);
-  };
-
-  // Delete a customer
-  const handleDeleteButton = async (id) => {
-    const proDoc = doc(productsCollectionRef, id);
-    await deleteDoc(proDoc);
-    getTypes();
   };
 
   // Apply filters and search
   useEffect(() => {
-    let result = customerInventory;
+    let result = smsListing;
 
     // Apply search
     if (searchTerm) {
@@ -64,14 +58,19 @@ export default function CustomerInventory() {
         customer.dayofWeek === filters.dayofWeek
       );
     }
+    if (filters.smsDeliveryStatus) {
+      result = result.filter(customer => 
+        customer.dayofWeek === filters.smsDeliveryStatus
+      );
+    }
 
     setFilteredData(result);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [searchTerm, filters, customerInventory]);
+  }, [searchTerm, filters, smsListing]);
 
   // Get unique values for filter dropdowns
   const getUniqueValues = (key) => {
-    return [...new Set(customerInventory.map(item => item[key]))].filter(Boolean);
+    return [...new Set(smsListing.map(item => item[key]))].filter(Boolean);
   };
 
   // Pagination logic
@@ -97,9 +96,9 @@ export default function CustomerInventory() {
                 <div className="card card-tasks">
                   <div className="card-header">
                     <h4 className="card-title">
-                      Customer List{" "}
-                      <Link to="/addClient" className="btn btn-primary btn-sm float-right">
-                        Add new Customer
+                      SMS List{" "}
+                      <Link to="/createSMSCampaign" className="btn btn-primary btn-sm float-right">
+                        Create SMS Campaign
                       </Link>
                     </h4>
                   </div>
@@ -118,11 +117,11 @@ export default function CustomerInventory() {
                       <div className="col-md-3">
                         <select
                           className="form-control"
-                          value={filters.assignedto}
-                          onChange={(e) => setFilters({...filters, assignedto: e.target.value})}
+                          value={filters.smsDeliveryStatus}
+                          onChange={(e) => setFilters({...filters, smsDeliveryStatus: e.target.value})}
                         >
-                          <option value="">Filter by Sales Person</option>
-                          {getUniqueValues('assignedto').map((person) => (
+                          <option value="">Filter by Delivery Status</option>
+                          {getUniqueValues('smsDeliveryStatus').map((person) => (
                             <option key={person} value={person}>{person}</option>
                           ))}
                         </select>
@@ -159,53 +158,33 @@ export default function CustomerInventory() {
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Client Name<sup>Rating</sup></th>
-                            <th>Client Added By</th>
+                            <th>Client Name</th>
+                            <th>Client Assigned To</th>
                             <th>Client Business Name</th>
                             <th>Client Location</th>
                             <th>Client Phone Number</th>
-                            <th>Day of the week</th>
-                            <th>Religion</th>
-                            <th>Action</th>
+                            <th>Date</th>
+                            <th>SMS Delivery Status</th>
+                            <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {currentItems.map((product, index) => (
-                            <tr key={product.id}>
+                          {currentItems.map((sms, index) => (
+                            <tr key={sms.id}>
                               <td>{indexOfFirstItem + index + 1}</td>
                               <td>
-                                {product.clientname} <sup>{product.rating}</sup>
+                                {sms.clientname}
                               </td>
-                              <td>{product.assignedto}</td>
-                              <td>{product.businessname}</td>
-                              <td>{product.location}</td>
-                              <td>{product.phoneNumber}</td>
-                              <td>{product.dayofWeek}</td>
-                              <td>{product.religion}</td>
-                              <td className="td-actions">
-                                <div className="form-button-action">
-                                  <Link to="/updateclientDetails">
-                                    <button
-                                      type="button"
-                                      className="btn btn-link btn-success"
-                                      onClick={() => {
-                                        sessionStorage.setItem(
-                                          "customer_inventory_obj",
-                                          JSON.stringify(product)
-                                        );
-                                      }}
-                                    >
-                                      <i className="la la-edit"></i>
-                                    </button>
-                                  </Link>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleDeleteButton(product.id)}
-                                    className="btn btn-link btn-danger"
-                                  >
-                                    <i className="la la-times"></i>
-                                  </button>
-                                </div>
+                              <td>{sms.assignedto}</td>
+                              <td>{sms.businessname}</td>
+                              <td>{sms.location}</td>
+                              <td>{sms.phoneNumber}</td>
+                              <td>{sms.dayofWeek}</td>
+                              <td>{sms.date}</td>
+                              <th>{sms.smsDeliveryStatus}</th>
+                              {/* View */}
+                              <td>
+                                <Link to={`/sms/${sms.id}`}></Link>
                               </td>
                             </tr>
                           ))}

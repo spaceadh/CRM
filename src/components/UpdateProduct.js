@@ -10,13 +10,25 @@ export default function UpdateProduct() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const categoriesCollectionReference = collection(db, "staff_members");
-  const getCategories = async () => {
+  const getStaffMembers = async () => {
     const data = await getDocs(categoriesCollectionReference);
     setCategories(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
   useEffect(() => {
-    getCategories();
+    getStaffMembers();
   }, []);
+
+  const religions = [
+    { name: "Christianity" },
+    { name: "Islam" },
+    { name: "Hinduism" },
+    { name: "Buddhism" },
+    { name: "Judaism" },
+    { name: "Traditional African Religions" },
+    { name: "Atheism" },
+    { name: "Other" },
+  ];
+
   const productCollectionRef = collection(db, "test_customer_database");
   const [product, setProduct] = useState(JSON.parse(sessionStorage.getItem("customer_inventory_obj")));
 
@@ -151,6 +163,29 @@ export default function UpdateProduct() {
                         }
                         placeholder="Enter dayofWeek"
                       />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleFormControlSelect1">Client Religion</label>
+                      <select
+                        class="form-control"
+                        onChange={(event) =>
+                          setProduct((prev) => ({ ...prev, religion: event.target.value }))
+                        }
+                        id="exampleFormControlSelect1">
+                        <option value="">Client Religion...</option>
+                        {religions.map((religion) => {
+                          if (religion.name === product.religion) {
+                            return (
+                              <option value={religion.name} selected="true">
+                                {religion.name}
+                              </option>
+                            );
+                          } else {
+                            return <option value={religion.name}>{religion.name}</option>;
+                          }
+                        })}
+                      </select>
                     </div>
                   </div>
 

@@ -4,62 +4,23 @@ import AdminHeader from "./layouts/AdminHeader";
 import AdminSideBar from "./layouts/AdminSideBar";
 import AdminFooter from "./layouts/AdminFooter";
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc,getDocs } from "firebase/firestore";
 
 export default function ClientExcelUploader() {
   const [previewData, setPreviewData] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [selectedSheets, setSelectedSheets] = useState([]);
+  const [staffMembers, setStaffMembers] = useState([]);
 
-  // const handleFileUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
+  const getStaffMembers = async () => {
+  const staffMembersCollectionReference = collection(db, "staff_members");
+    const data = await getDocs(staffMembersCollectionReference);
+    setStaffMembers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+  useEffect(() => {
+    getStaffMembers();
+  }, []);
 
-  //   const reader = new FileReader();
-
-  //   reader.onload = (evt) => {
-  //     const bstr = evt.target.result;
-  //     const wb = XLSX.read(bstr, { type: "binary" });
-
-  //     // Process all sheets or just the first one
-  //     const wsname = wb.SheetNames[0]; // Or loop through all sheets if needed
-  //     const ws = wb.Sheets[wsname];
-
-  //     const rawData = XLSX.utils.sheet_to_json(ws, {
-  //       header: ["customer", "location", "contact", "salesPersonel"], // Match Excel columns
-  //       defval: "",
-  //       range: 1, // Skip header row
-  //     });
-
-  //     console.log("Raw Excel data:", rawData);
-
-  //     const formatted = rawData
-  //       .filter(row => row.customer && row.customer.trim() !== "") // Filter out empty rows
-  //       .map((entry) => {
-  //         // Split customer name if it contains "&" or "/" for business name
-         
-  //         // const [clientname = "", businessname = ""] = 
-  //         //   (entry.customer || "").split(/[&/]/).map(s => s.trim());
-  //         const clientname = entry.customer.trim(); // Use the full customer name as clientname
-            
-  //         return {
-  //           clientname,
-  //           // businessname: businessname || clientname, // Fallback to clientname if no businessname
-  //           businessname: clientname, // Fallback to clientname if no businessname
-  //           location: (entry.location || "").trim(),
-  //           phoneNumber: (entry.contact || "").trim(), // Map 'contact' to 'phoneNumber'
-  //           assignedto: (entry.salesPersonel || "").trim(), // Map 'salesPersonel' to 'assignedto'
-  //         };
-  //       });
-
-  //     console.log("Formatted data:", formatted);
-  //     setPreviewData(formatted);
-  //   };
-
-  //   reader.readAsBinaryString(file);
-  // };
-
-  // Rest of the component remains the same...
   const handleFileUpload = (e) => {
       const file = e.target.files[0];
       if (!file) return;

@@ -8,7 +8,7 @@ import AdminLogin from "./components/AdminLogin";
 import AdminRegister from "./components/AdminRegister";
 import AdminProfile from "./components/AdminProfile";
 import StaffMember from "./components/StaffMember";
-import OrdersCategory from './components/OrdersCategory';
+import SMSListing from './components/SMSListing';
 import AddCategory from "./components/AddCategory";
 import UpdateCategory from "./components/UpdateCategory";
 import UploadData from "./components/UploadData";
@@ -17,6 +17,7 @@ import UploadData from "./components/UploadData";
 // import UpdateType from "./components/UpdateType";
 import Inventory from "./components/Inventory";
 import AddProduct from "./components/AddProduct";
+import CreateSMSCampaign from "./components/CreateSMSCampaign";
 import UpdateProduct from "./components/UpdateProduct";
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
         <Route path="/register" element={<AdminRegister />} />
         <Route path="/profile" element={<AdminProfile />} />
         <Route path="/staff" element={<StaffMember />} />
-        <Route path="/sms" element={<OrdersCategory />} />
+        <Route path="/sms" element={<SMSListing />} />
         <Route path="/addstaffmember" element={<AddCategory />} />
         <Route path="/updatestaffmember" element={<UpdateCategory />} />
         <Route path="/upload" element={<UploadData />} />
@@ -39,6 +40,7 @@ function App() {
         <Route path="/updatetype" element={<UpdateType />} /> */}
         <Route path="/clients" element={<Inventory />} />
         <Route path="/addClient" element={<AddProduct />} />
+        <Route path="/createSMSCampaign" element={<CreateSMSCampaign />} />
         <Route path="/updateclientDetails" element={<UpdateProduct />} />
       </Routes>
     </BrowserRouter>
