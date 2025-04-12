@@ -61,7 +61,7 @@ export default function Dashboard(props) {
                       </div>
                       <div className="col-7 d-flex align-items-center">
                         <div className="numbers">
-                          <p className="card-category">Products No.</p>
+                          <p className="card-category">Customer Count</p>
                           <h4 className="card-title">{customerCount}</h4>
                         </div>
                       </div>
@@ -80,7 +80,7 @@ export default function Dashboard(props) {
                       </div>
                       <div className="col-7 d-flex align-items-center">
                         <div className="numbers">
-                          <p className="card-category">Total Stock in the hardware</p>
+                          <p className="card-category">Total SMS`s sent.</p>
                           <h4 className="card-title">{SMSsent}</h4>
                         </div>
                       </div>

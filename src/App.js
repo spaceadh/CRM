@@ -11,6 +11,7 @@ import StaffMember from "./components/StaffMember";
 import OrdersCategory from './components/OrdersCategory';
 import AddCategory from "./components/AddCategory";
 import UpdateCategory from "./components/UpdateCategory";
+import UploadData from "./components/UploadData";
 // import MedicineTypes from "./components/MedicineTypes";
 // import AddType from "./components/AddType";
 // import UpdateType from "./components/UpdateType";
@@ -32,6 +33,7 @@ function App() {
         <Route path="/sms" element={<OrdersCategory />} />
         <Route path="/addstaffmember" element={<AddCategory />} />
         <Route path="/updatestaffmember" element={<UpdateCategory />} />
+        <Route path="/upload" element={<UploadData />} />
         {/* <Route path="/types" element={<MedicineTypes />} /> */}
         {/* <Route path="/addtype" element={<AddType />} />
         <Route path="/updatetype" element={<UpdateType />} /> */}

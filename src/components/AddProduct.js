@@ -34,7 +34,7 @@ export default function AddProduct() {
   const [product, setInventory] = useState({
     clientname: "",
     rating: "",
-    category: "",
+    assignedto: "",
     businessname: "",
     location: "",
     phoneNumber: "",
@@ -42,39 +42,39 @@ export default function AddProduct() {
   });
 
   const handleClientsDetails = async () => {
-    if (
-      product.clientname &&
-      product.rating &&
-      product.category &&
-      product.businessname &&
-      product.location &&
-      product.phoneNumber
-    ) {
+    // if (
+    //   product.clientname &&
+    //   product.rating &&
+    //   product.assignedto &&
+    //   product.businessname &&
+    //   product.location &&
+    //   product.phoneNumber
+    // ) {
       setErrorMsg("");
       const rating = parseFloat(product.rating) <= 5 ? product.rating.toString() : "5";
 
       await addDoc(productsCollectionRef, {
         ...product,
-        businessname: product.businessname,
-        location: product.location,
-        rating: rating,
-        phoneNumber: product.phoneNumber,
-        assignedto: product.category,
+        businessname: product.businessname ? product.businessname : "N/A",
+        location: product.location ? product.location : "N/A",
+        rating: rating ? rating : "N/A",  
+        phoneNumber: product.phoneNumber ? product.phoneNumber : "N/A",
+        assignedto: product.assignedto ? product.assignedto : "N/A",
         // discount:
         // product.originalPrice && parseFloat(product.originalPrice) !== parseFloat(product.businessname)
         //   ? parseFloat(product.originalPrice) - parseFloat(product.businessname)
         //   : null,
         // discount: product.originalPrice && product.originalPrice !== product.businessname ? product.originalPrice - product.businessname : null
       });
-      setSuccessMsg("Inventory added successfully!");
+      setSuccessMsg("Customer added successfully!");
       setTimeout(() => {
         setSuccessMsg("");
         navigate("/clients");
       }, 1000);
-    } else {
-      console.log(product);
-      setErrorMsg("Please fill out all the required fields!");
-    }
+    // } else {
+    //   console.log(product);
+    //   setErrorMsg("Please fill out all the required fields!");
+    // }
   };
 
   return (
@@ -138,19 +138,19 @@ export default function AddProduct() {
                       />
                     </div> */}
                     <div className="form-group">
-                      <label htmlFor="category">Client Assigned to</label>
+                      <label htmlFor="assignedto">Client Assigned to</label>
                       <select
                         className="form-control"
                         value={product.assignedto}
                         onChange={(event) =>
-                          setInventory((prev) => ({ ...prev, category: event.target.value }))
+                          setInventory((prev) => ({ ...prev, assignedto: event.target.value }))
                         }
-                        id="category"
+                        id="assignedto"
                       >
                         <option value="">Client Assigned To ...</option>
-                        {categories.map((category) => (
-                          <option key={category.id} value={category.name}>
-                            {category.name}
+                        {categories.map((assignedto) => (
+                          <option key={assignedto.id} value={assignedto.name}>
+                            {assignedto.name}
                           </option>
                         ))}
                       </select>

@@ -23,14 +23,14 @@ export default function UpdateProduct() {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const handleUpdateClientDetails = async () => {
-    if (
-      product.clientname &&
-      product.id &&
-      product.phoneNumber &&
-      product.assignedto &&
-      product.businessname &&
-      product.location
-    ) {
+    // if (
+    //   product.clientname &&
+    //   product.id &&
+    //   product.phoneNumber &&
+    //   product.assignedto &&
+    //   product.businessname &&
+    //   product.location
+    // ) {
       const medDoc = doc(productCollectionRef, product.id);
       await updateDoc(medDoc, product);
       setErrorMsg("");
@@ -39,9 +39,9 @@ export default function UpdateProduct() {
         setSuccessMsg("");
         navigate("/clients");
       }, 1000);
-    } else {
-      setErrorMsg("Please fill out all the required fields!");
-    }
+    // } else {
+    //   setErrorMsg("Please fill out all the required fields!");
+    // }
   };
   return (
     <>
