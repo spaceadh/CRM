@@ -6,24 +6,31 @@ import AdminFooter from "./layouts/AdminFooter";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-export default function AddCategory() {
+export default function AddStaffMember() {
   const navigate = useNavigate();
 
   const categoryCollectionRef = collection(db, "staff_members");
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [catName, setCatName] = useState("");
-  const handleAddCategory = async () => {
-    if (catName) {
+  const [phoneNo, setPhoneNo] = useState("");
+  const handleAddStaffMember = async () => {
+    if (catName && phoneNo) {
+      //Ensure phone matches the format of 07XXXXXXXX or 011xxxxxxx i.e 0114122162
+      const phoneRegex = /^(07\d{8}|011\d{7})$/;
+      if (!phoneRegex.test(phoneNo)) {
+        setErrorMsg("Invalid phone number format. Please use 07XXXXXXXX or 011xxxxxxx format.");
+        return;
+      }
       setErrorMsg("");
-      await addDoc(categoryCollectionRef, { name: catName });
+      await addDoc(categoryCollectionRef, { name: catName, phoneNo: phoneNo });
       setSuccessMsg("Staff Member added successfully!");
       setTimeout(() => {
         setSuccessMsg("");
         navigate("/staff");
       }, 1000);
     } else {
-      setErrorMsg("Staff Member name required!");
+      setErrorMsg("Staff Member name or Phone Number required!");
     }
   };
   return (
@@ -60,10 +67,25 @@ export default function AddCategory() {
                       />
                     </div>
                   </div>
+                  <div className="card-body px-4">
+                    <div className="form-group">
+                      <label htmlFor="phone">Staff Phone Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={phoneNo}
+                        id="phone"
+                        onChange={(event) => {
+                          setPhoneNo(event.target.value);
+                        }}
+                        placeholder="Enter Staff Phone Number"
+                      />
+                    </div>
+                  </div>
                   <div className="form-group px-4 mb-3">
                     <div className="text-center text-danger">{errorMsg}</div>
                     <div className="text-center text-success">{successMsg}</div>
-                    <button className="btn btn-primary mx-3" onClick={handleAddCategory}>
+                    <button className="btn btn-primary mx-3" onClick={handleAddStaffMember}>
                       Add Staff Member
                     </button>
                   </div>

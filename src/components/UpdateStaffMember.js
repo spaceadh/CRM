@@ -7,14 +7,21 @@ import { db } from "../firebase";
 import { collection, doc, updateDoc, getDocs,deleteDoc } from "firebase/firestore";
 
 
-export default function UpdateCategory() {
+export default function UpdateStaffMember() {
   const navigate = useNavigate();
   const categoryCollectionRef = collection(db, "staff_members");
   const [category, setCategory] = useState(JSON.parse(sessionStorage.getItem("staff_members_obj")));
 
   const [errorMsg, setErrorMsg] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");  
+
   const handleUpdateCategory = async () => {
+    //Ensure phone matches the format of 07XXXXXXXX or 011xxxxxxx i.e 0114122162
+    const phoneRegex = /^(07\d{8}|011\d{7})$/;
+    if (!phoneRegex.test(category.phoneNo)) {
+      setErrorMsg("Invalid phone number format. Please use 07XXXXXXXX or 011xxxxxxx format.");
+      return;
+    }
     if (category.name) {
       const categoryDoc = doc(categoryCollectionRef, category.id);
       await updateDoc(categoryDoc, category);
@@ -25,6 +32,8 @@ export default function UpdateCategory() {
         navigate("/staff");
       }, 1000);
     } else {
+      console.log("category", category.name);
+      console.log("category", category.phoneNo);
       setErrorMsg("Staff Member name cannot be Empty!");
     }
   };
@@ -59,6 +68,21 @@ export default function UpdateCategory() {
                           setCategory((prev) => ({ ...prev, name: event.target.value }))
                         }
                         placeholder="Enter Staff Member Name"
+                      />
+                    </div>
+                  </div>
+                  <div className="card-body px-4">
+                    <div className="form-group">
+                      <label htmlFor="phone">Staff Phone Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={category.phoneNo}
+                        id="phone"
+                        onChange={(event) => {
+                          setCategory((prev) => ({ ...prev, phoneNo: event.target.value }))
+                        }}
+                        placeholder="Enter Staff Phone Number"
                       />
                     </div>
                   </div>

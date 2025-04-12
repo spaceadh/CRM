@@ -9,8 +9,8 @@ import AdminRegister from "./components/AdminRegister";
 import AdminProfile from "./components/AdminProfile";
 import StaffMember from "./components/StaffMember";
 import SMSListing from './components/SMSListing';
-import AddCategory from "./components/AddCategory";
-import UpdateCategory from "./components/UpdateCategory";
+import AddStaffMember from "./components/AddStaffMember";
+import UpdateStaffMember from "./components/UpdateStaffMember";
 import UploadData from "./components/UploadData";
 // import MedicineTypes from "./components/MedicineTypes";
 // import AddType from "./components/AddType";
@@ -32,8 +32,8 @@ function App() {
         <Route path="/profile" element={<AdminProfile />} />
         <Route path="/staff" element={<StaffMember />} />
         <Route path="/sms" element={<SMSListing />} />
-        <Route path="/addstaffmember" element={<AddCategory />} />
-        <Route path="/updatestaffmember" element={<UpdateCategory />} />
+        <Route path="/addstaffmember" element={<AddStaffMember />} />
+        <Route path="/updatestaffmember" element={<UpdateStaffMember />} />
         <Route path="/upload" element={<UploadData />} />
         {/* <Route path="/types" element={<MedicineTypes />} /> */}
         {/* <Route path="/addtype" element={<AddType />} />

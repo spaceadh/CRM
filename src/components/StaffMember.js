@@ -8,7 +8,7 @@ import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 export default function StaffMember(props) {
   var counter = 1;
-  const [categories, setCategories] = useState([]);
+  const [staffmembers, setCategories] = useState([]);
   const categoriesCollectionReference = collection(db, "staff_members");
   const getCategories = async () => {
     const data = await getDocs(categoriesCollectionReference);
@@ -48,15 +48,17 @@ export default function StaffMember(props) {
                           <tr>
                             <th>#</th>
                             <th>Staff Member Name</th>
+                            <th>Staff Member Phone Number</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {categories.map((category) => {
+                          {staffmembers.map((staff) => {
                             return (
                               <tr>
                                 <td>{counter++}</td>
-                                <td>{category.name}</td>
+                                <td>{staff.name}</td>
+                                <td>{staff.phoneNo}</td>
                                 <td className="td-actions">
                                   <div className="form-button-action">
                                     <Link to="/updatestaffmember">
@@ -66,7 +68,7 @@ export default function StaffMember(props) {
                                         onClick={() => {
                                           sessionStorage.setItem(
                                             "staff_members_obj",
-                                            JSON.stringify(category)
+                                            JSON.stringify(staff)
                                           );
                                         }}>
                                         <i className="la la-edit"></i>
@@ -75,7 +77,7 @@ export default function StaffMember(props) {
                                     <button
                                       type="button"
                                       onClick={() => {
-                                        handleDeleteButton(category.id);
+                                        handleDeleteButton(staff.id);
                                       }}
                                       className="btn btn-link btn-danger">
                                       <i className="la la-times"></i>
